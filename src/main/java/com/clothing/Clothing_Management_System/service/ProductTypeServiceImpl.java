@@ -1,7 +1,7 @@
-package com.example.Clothing_Management_System.service;
+package com.clothing.Clothing_Management_System.service;
 
-import com.example.Clothing_Management_System.repository.ProductTypeRepository;
-import com.example.Clothing_Management_System.entity.ProductType;
+import com.clothing.Clothing_Management_System.repository.ProductTypeRepository;
+import com.clothing.Clothing_Management_System.entity.ProductType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

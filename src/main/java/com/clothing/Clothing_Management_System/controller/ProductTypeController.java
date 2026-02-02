@@ -1,8 +1,8 @@
-package com.example.Clothing_Management_System.controller;
+package com.clothing.Clothing_Management_System.controller;
 
 
-import com.example.Clothing_Management_System.entity.ProductType;
-import com.example.Clothing_Management_System.service.ProductTypeService;
+import com.clothing.Clothing_Management_System.entity.ProductType;
+import com.clothing.Clothing_Management_System.service.ProductTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/product-types")
+@CrossOrigin(origins = "http://localhost:5174")
 public class ProductTypeController {
 
     @Autowired

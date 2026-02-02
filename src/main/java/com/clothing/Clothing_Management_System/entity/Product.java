@@ -1,9 +1,11 @@
-package com.example.Clothing_Management_System.entity;
+package com.clothing.Clothing_Management_System.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
 @Table(name="products")
+@Data
 public class Product {
 
     @Id
@@ -12,8 +14,8 @@ public class Product {
 
     // Basic info
     private String name;
-    private String brand;        // optional
-    private String description;  // optional
+    private String brand;
+    private String description;
 
     // Pricing
     private double costPrice;
@@ -24,7 +26,7 @@ public class Product {
 
     // Classification
     @ManyToOne(optional = false)
-    @JoinColumn(name = "product_type_id", referencedColumnName = "id")
+    @JoinColumn(name = "product_type_id", referencedColumnName = "id",nullable = false)
     private ProductType productType;
 
 
