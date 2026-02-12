@@ -6,6 +6,8 @@ import com.clothing.Clothing_Management_System.repository.ProductRepository;
 import com.clothing.Clothing_Management_System.entity.Product;
 import com.clothing.Clothing_Management_System.repository.ProductTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,9 +26,9 @@ public class ProductServiceImpl implements ProductService{
     public Product create(ProductRequest req) {
         ProductType type = typeRepo.findByNameAndGender(req.getProductTypeName(),req.getGender())
                 .orElseGet(() ->{
-                    ProductType newType = new ProductType();
-                    newType.setName(req.getProductTypeName());
-                    newType.setGender(req.getGender());
+                    ProductType newType = new ProductType(req.getProductTypeName(),
+                            req.getGender()
+                            );
                     return typeRepo.save(newType);
                 });
 
@@ -37,6 +39,7 @@ public class ProductServiceImpl implements ProductService{
         product.setSellingPrice(req.getSellingPrice());
         product.setQuantity(req.getQuantity());
         product.setDescription(req.getDescription());
+
         product.setProductType(type);
 
         return productRepo.save(product);
@@ -56,4 +59,8 @@ public class ProductServiceImpl implements ProductService{
     public List<Product> search(String q) {
         return productRepo.search(q);
     }
+
+//    @Override
+//    public Page<Product> getProducts(int page, int size) {
+//        return productRepo.findAll(PageRequest.of(page, size));    }
 }
