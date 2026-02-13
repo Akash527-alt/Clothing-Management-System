@@ -7,6 +7,7 @@ import com.clothing.Clothing_Management_System.entity.ProductType;
 import com.clothing.Clothing_Management_System.service.ProductService;
 import com.clothing.Clothing_Management_System.service.ProductTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,7 +18,6 @@ public class ProductController {
 
     @Autowired
     ProductService productService;
-    
     @Autowired
     ProductTypeService productTypeService;
 
@@ -29,7 +29,7 @@ public class ProductController {
     }
 
 
-    @GetMapping("/getAll")
+    @GetMapping("getAll")
     public List<Product> getAll() {
         return productService.getAll();
     }
@@ -43,5 +43,11 @@ public class ProductController {
     public Product getById(@PathVariable Long id) {
         return productService.getById(id);
     }
+
+
+
+
+
+
 
 }

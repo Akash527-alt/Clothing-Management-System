@@ -1,6 +1,8 @@
 package com.clothing.Clothing_Management_System.repository;
 
 import com.clothing.Clothing_Management_System.entity.Product;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -22,5 +24,9 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
             )
         """)
     List<Product> search(@Param("q") String q);
+
+
+//    Page<Product> findByNameContainingIgnoreCase(String name, Pageable pageable);
+
 }
 

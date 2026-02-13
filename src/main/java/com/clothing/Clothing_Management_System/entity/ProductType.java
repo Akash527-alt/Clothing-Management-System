@@ -15,9 +15,8 @@ public class ProductType {
     private String name;
 
     @Enumerated(EnumType.STRING)
+    @Column(name="gender", length = 20, nullable = false)
     private Gender gender;
-
-
 
 
     public ProductType(){}
