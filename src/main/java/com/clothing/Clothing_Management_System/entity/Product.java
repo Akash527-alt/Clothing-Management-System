@@ -1,6 +1,7 @@
 package com.clothing.Clothing_Management_System.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Entity
