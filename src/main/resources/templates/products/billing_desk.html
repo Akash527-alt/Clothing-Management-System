@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Billing Desk - Clothing Management Shop</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f4f6f9;
+        }
+
+        .header-title {
+            font-weight: bold;
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .action-bar {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+
+        .section-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 20px;
+            height: 600px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .table-scroll {
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+
+        .table-scroll thead th {
+            position: sticky;
+            top: 0;
+            z-index: 5;
+        }
+
+        .generate-section {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-top: 20px;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Heading -->
+    <h2 class="header-title">Billing Desk</h2>
+
+    <!-- Search Bar -->
+    <div class="action-bar d-flex justify-content-between align-items-center">
+
+        <div class="input-group w-50">
+            <input id="search_input" type="text" class="form-control" placeholder="Search by ID, Name, Brand...">
+            <button id="search_button" class="btn btn-primary">Search</button>
+            <button id ="clearButton" type ="button" class="btn btn-outline-secondary ms-2">clear</button>
+        </div>
+
+    </div>
+
+    <!-- Two Column Layout -->
+    <div class="row">
+
+        <!-- Available Products -->
+        <div class="col-md-6">
+            <div class="section-card">
+                <h5 class="mb-3">Available Products</h5>
+
+                <div class="table-scroll">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Add</th>
+                        </tr>
+                        </thead>
+                        <tbody id="billingTBody">
+                        <!-- Products dynamically loaded here -->
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Added Products (Cart) -->
+        <div class="col-md-6">
+            <div class="section-card">
+                <h5 class="mb-3">Added Products</h5>
+
+                <div class="table-scroll">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-dark">
+                        <tr>
+                            <th>Name</th>
+                            <th>Qty</th>
+                            <th>Price</th>
+                            <th>Remove</th>
+                        </tr>
+                        </thead>
+                        <tbody id="cartTBody">
+                        <!-- Added items dynamically appear here -->
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Generate Bill Section -->
+    <div class="generate-section">
+        <button class="btn btn-lg btn-primary px-4">
+            Generate Bill
+        </button>
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/billing_desk.js}"></script>
+</body>
+</html>

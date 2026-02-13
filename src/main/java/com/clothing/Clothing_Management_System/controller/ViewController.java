@@ -20,6 +20,11 @@ public class ViewController {
         return "products/list";
     }
 
+    @GetMapping("/billing_desk")
+    public String billingDeskPage(){
+        return "products/billing_desk";
+    }
+
 
 }
 

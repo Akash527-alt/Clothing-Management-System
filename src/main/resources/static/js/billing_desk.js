@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function() {
-    const tbody = document.getElementById('productTBody');
-    const searchInput = document.getElementById('searchInput');
-    const searchBtn = document.getElementById("searchButton");
+    const billingTBody = document.getElementById('billingTBody');
+    const searchInput = document.getElementById('search_input');
+    const searchBtn = document.getElementById("search_button");
     const clearBtn = document.getElementById("clearButton");
 
     console.log("js loaded");
@@ -23,10 +23,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
     function renderProducts(products) {
-        tbody.innerHTML = '';
+        billingTBody.innerHTML = '';
 
         if (!products || products.length === 0) {
-            tbody.innerHTML = `
+            billingTBody.innerHTML = `
         <tr>
           <td colspan="8" class="text-center text-muted py-4">
             no matching products found
@@ -37,15 +37,22 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
         products.forEach((product) => {
-            tbody.innerHTML += `
+            billingTBody.innerHTML += `
         <tr>
           <td>${product.id}</td>
           <td>${product.name ?? "-"}</td>
-          <td>${product.brand ?? "-"}</td>
-          <td>${product.productType?.name ?? "-"}</td>
-          <td>${product.productType?.gender ?? "-"}</td>
+
           <td>${product.sellingPrice ?? 0}</td>
-          <td>${product.quantity ?? 0}</td>
+          <td>
+                  <button
+                      class="btn btn-sm btn-success add-btn"
+                      data-id="${product.id}"
+                      data-name="${product.name}"
+                      data-price="${product.sellingPrice}">
+                      Add
+                  </button>
+          </td>
+
           <td>
             <button class="btn btn-sm btn-outline-primary">Edit</button>
             <button class="btn btn-sm btn-outline-danger">Delete</button>
@@ -56,6 +63,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     searchBtn.addEventListener("click", () => {
+        console.log("haaa in search button");
         const q = searchInput.value.trim();
 
         if (!q) {
@@ -71,10 +79,40 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     searchInput.addEventListener("keydown", (e) => {
+    console.log("haaa");
         if (e.key === "Enter") searchBtn.click();
     });
 
+    billingTBody.addEventListener("click", function (e) {
+        if (e.target.classList.contains("add-btn")) {
 
+            const id = e.target.dataset.id;
+            const name = e.target.dataset.name;
+            const price = e.target.dataset.price;
+
+            console.log("Adding:", id, name, price);
+
+            addProductToCart({ id, name, price });
+        }
+    });
+
+    function addProductToCart(product) {
+
+        const cartBody = document.getElementById("cartTBody");
+
+        cartBody.innerHTML += `
+            <tr>
+                <td>${product.name}</td>
+                <td>1</td>
+                <td>₹${product.price}</td>
+                <td>
+                    <button class="btn btn-sm btn-danger remove-btn">
+                        Remove
+                    </button>
+                </td>
+            </tr>
+        `;
+    }
 
 
 
