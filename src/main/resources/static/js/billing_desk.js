@@ -1,8 +1,11 @@
 document.addEventListener("DOMContentLoaded", function() {
+    const cart = {};
+    const cartBody = document.getElementById("cartTBody");
     const billingTBody = document.getElementById('billingTBody');
     const searchInput = document.getElementById('search_input');
     const searchBtn = document.getElementById("search_button");
     const clearBtn = document.getElementById("clearButton");
+    const generateBillbtn=document.getElementById("generateBillbtn")
 
     console.log("js loaded");
 
@@ -95,13 +98,38 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function addProductToCart(product) {
 
-        const cartBody = document.getElementById("cartTBody");
+        const id = product.id;
 
-        cartBody.innerHTML += `
-            <tr>
-                <td>${product.name}</td>
-                <td>1</td>
-                <td>₹${product.price}</td>
+        if (cart[id]) {
+            cart[id].qty += 1;
+        } else {
+            cart[id] = {
+                id: product.id,
+                name: product.name,
+                price: parseFloat(product.price),
+                qty: 1
+            };
+        }
+
+        renderCart();
+    }
+
+
+    function renderCart() {
+
+        cartBody.innerHTML = "";
+
+        Object.values(cart).forEach(item => {
+
+            cartBody.innerHTML += `
+            <tr data-id="${item.id}">
+                <td>${item.name}</td>
+                <td>
+                    <button class="btn btn-sm btn-danger fw-bold px-2 qty-minus">-</button>
+                    <span class="mx-2">${item.qty}</span>
+                    <button class="btn btn-sm btn-success fw-bold px-2 qty-plus">+</button>
+                </td>
+                <td>₹${item.price * item.qty}</td>
                 <td>
                     <button class="btn btn-sm btn-danger remove-btn">
                         Remove
@@ -109,9 +137,62 @@ document.addEventListener("DOMContentLoaded", function() {
                 </td>
             </tr>
         `;
+        });
     }
 
 
+    cartBody.addEventListener("click", function(e) {
+
+        const row = e.target.closest("tr");
+        if (!row) return;
+
+        const id = row.dataset.id;
+
+        if (e.target.classList.contains("remove-btn")) {
+            delete cart[id];
+            renderCart();
+        }
+
+        if (e.target.classList.contains("qty-plus")) {
+            cart[id].qty += 1;
+            renderCart();
+        }
+
+        if (e.target.classList.contains("qty-minus")) {
+            if (cart[id].qty > 1) {
+                cart[id].qty -= 1;
+            } else {
+                delete cart[id];
+            }
+            renderCart();
+        }
+    });
+
+
+    generateBillbtn.addEventListener("click", async function(){
+        try {
+
+            const res = await fetch("/api/sales", {
+                method: "POST", // or GET depending on your API
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(cart) // remove if GET
+            });
+
+            if (!res.ok) {
+                console.error("Generate bill failed:", res.status);
+                return;
+            }
+
+            const data = await res.json(); // remove if no response body
+            console.log("Bill generated:", data);
+
+        } catch (err) {
+            console.error("Error while generating bill:", err);
+        }
+
+    });
 
     fetchProducts("/api/products/getAll");
 });

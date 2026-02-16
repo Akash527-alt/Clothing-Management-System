@@ -117,7 +117,8 @@ document.addEventListener("DOMContentLoaded", function() {
     const modalInstance = bootstrap.Modal.getInstance(modalElement);
     modalInstance.hide();
 
-    fetchProducts("/api/products");
+    await fetchProducts("/api/products");
+    await fetchProducts("/api/products/getAll")
     });
 
 
@@ -166,7 +167,8 @@ document.addEventListener("DOMContentLoaded", function() {
         const modalInstance = bootstrap.Modal.getInstance(modalElement);
         modalInstance.hide();
 
-        fetchProducts("/api/products/${id}");
+        await fetchProducts(`/api/products/${id}`);
+        await fetchProducts("/api/products/getAll")
     });
 
 
