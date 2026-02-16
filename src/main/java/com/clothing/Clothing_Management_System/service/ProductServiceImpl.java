@@ -1,11 +1,14 @@
 package com.clothing.Clothing_Management_System.service;
 
-import com.clothing.Clothing_Management_System.entity.ProductRequest;
+import com.clothing.Clothing_Management_System.dto.ProductRequest;
+import com.clothing.Clothing_Management_System.dto.UpdateProductRequest;
 import com.clothing.Clothing_Management_System.repository.ProductRepository;
 import com.clothing.Clothing_Management_System.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -29,6 +32,21 @@ public class ProductServiceImpl implements ProductService{
         product.setSellingPrice(req.getSellingPrice());
         product.setQuantity(req.getQuantity());
         product.setAddedDate(req.getAddedDate());
+
+        return productRepo.save(product);
+    }
+
+    @Transactional
+    public Product updateProduct(Long id, UpdateProductRequest request) {
+
+        Product product = productRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+        product.setQuantity(request.getQuantity());
+        product.setCostPrice(request.getCostPrice());
+        product.setSellingPrice(request.getSellingPrice());
+
+        product.setAddedDate(LocalDate.now());
 
         return productRepo.save(product);
     }

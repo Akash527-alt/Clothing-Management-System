@@ -1,8 +1,9 @@
 package com.clothing.Clothing_Management_System.controller;
 
 
+import com.clothing.Clothing_Management_System.dto.UpdateProductRequest;
 import com.clothing.Clothing_Management_System.entity.Product;
-import com.clothing.Clothing_Management_System.entity.ProductRequest;
+import com.clothing.Clothing_Management_System.dto.ProductRequest;
 import com.clothing.Clothing_Management_System.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -40,5 +41,12 @@ public class ProductController {
         return productService.getById(id);
     }
 
+    @PutMapping("/{id}")
+    public Product updateProduct(
+            @PathVariable Long id,
+            @RequestBody UpdateProductRequest request) {
+
+        return productService.updateProduct(id, request);
+    }
 
 }

@@ -1,5 +1,6 @@
-package com.clothing.Clothing_Management_System.entity;
+package com.clothing.Clothing_Management_System.dto;
 
+import com.clothing.Clothing_Management_System.entity.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
