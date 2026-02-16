@@ -172,12 +172,19 @@ document.addEventListener("DOMContentLoaded", function() {
     generateBillbtn.addEventListener("click", async function(){
         try {
 
+            const payload = {
+                items: Object.values(cart).map(item => ({
+                    productId: parseInt(item.id),
+                    quantity: item.qty
+                }))
+            };
+
             const res = await fetch("/api/sales", {
                 method: "POST", // or GET depending on your API
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(cart) // remove if GET
+                body: JSON.stringify(payload) // remove if GET
             });
 
             if (!res.ok) {
