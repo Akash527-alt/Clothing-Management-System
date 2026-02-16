@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function() {
         if (!products || products.length === 0) {
             billingTBody.innerHTML = `
         <tr>
-          <td colspan="8" class="text-center text-muted py-4">
+          <td colspan="8" class="text-center text-muted py-5">
             no matching products found
           </td>
         </tr>
@@ -43,6 +43,7 @@ document.addEventListener("DOMContentLoaded", function() {
           <td>${product.name ?? "-"}</td>
 
           <td>${product.sellingPrice ?? 0}</td>
+          <td>${product.quantity ?? 0}</td>
           <td>
                   <button
                       class="btn btn-sm btn-success add-btn"
@@ -53,10 +54,6 @@ document.addEventListener("DOMContentLoaded", function() {
                   </button>
           </td>
 
-          <td>
-            <button class="btn btn-sm btn-outline-primary">Edit</button>
-            <button class="btn btn-sm btn-outline-danger">Delete</button>
-          </td>
         </tr>
       `;
         });
