@@ -15,12 +15,11 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product,Long> {
     @Query("""
         SELECT p FROM Product p
-        LEFT JOIN p.productType pt
         WHERE
             (:q IS NULL OR :q = '' OR
              CAST(p.id AS string) LIKE CONCAT('%', :q, '%') OR
              LOWER(p.name) LIKE LOWER(CONCAT('%', :q, '%')) OR
-             LOWER(pt.name) LIKE LOWER(CONCAT('%', :q, '%'))
+             LOWER(p.category) LIKE LOWER(CONCAT('%', :q, '%'))
             )
         """)
     List<Product> search(@Param("q") String q);

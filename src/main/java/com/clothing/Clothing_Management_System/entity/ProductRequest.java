@@ -1,32 +1,30 @@
 package com.clothing.Clothing_Management_System.entity;
 
-
-import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.time.LocalDate;
+
 @Data
 public class ProductRequest {
+
     private String name;
     private String brand;
-    private double costPrice;
-    private double sellingPrice;
-    private int quantity;
-    private String description;
-
-    private String productTypeName;
+    private String category;
     private Gender gender;
+    private Double costPrice;
+    private Double sellingPrice;
+    private Integer quantity;
+    private LocalDate addedDate;
 
-    public ProductRequest(){}
-
-    public ProductRequest(String name, String brand, double costPrice, double sellingPrice, int quantity, String description, String productTypeName, Gender gender) {
+    public ProductRequest(String name, String brand, String category, Gender gender, Double costPrice, Double sellingPrice, Integer quantity, LocalDate addedDate) {
         this.name = name;
         this.brand = brand;
+        this.category = category;
+        this.gender = gender;
         this.costPrice = costPrice;
         this.sellingPrice = sellingPrice;
         this.quantity = quantity;
-        this.description = description;
-        this.productTypeName = productTypeName;
-        this.gender = gender;
+        this.addedDate = addedDate;
     }
 }

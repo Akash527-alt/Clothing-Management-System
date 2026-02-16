@@ -1,13 +1,9 @@
 package com.clothing.Clothing_Management_System.service;
 
 import com.clothing.Clothing_Management_System.entity.ProductRequest;
-import com.clothing.Clothing_Management_System.entity.ProductType;
 import com.clothing.Clothing_Management_System.repository.ProductRepository;
 import com.clothing.Clothing_Management_System.entity.Product;
-import com.clothing.Clothing_Management_System.repository.ProductTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,29 +15,20 @@ public class ProductServiceImpl implements ProductService{
     @Autowired
     ProductRepository productRepo;
 
-    @Autowired
-    ProductTypeRepository typeRepo;
 
 
     @Override
     public Product create(ProductRequest req) {
-        ProductType type = typeRepo.findByNameAndGender(req.getProductTypeName(),req.getGender())
-                .orElseGet(() ->{
-                    ProductType newType = new ProductType(req.getProductTypeName(),
-                            req.getGender()
-                            );
-                    return typeRepo.save(newType);
-                });
 
         Product product = new Product();
         product.setName(req.getName());
         product.setBrand(req.getBrand());
+        product.setGender(req.getGender());
+        product.setCategory(req.getCategory());
         product.setCostPrice(req.getCostPrice());
         product.setSellingPrice(req.getSellingPrice());
         product.setQuantity(req.getQuantity());
-        product.setDescription(req.getDescription());
-
-        product.setProductType(type);
+        product.setAddedDate(req.getAddedDate());
 
         return productRepo.save(product);
     }
@@ -61,7 +48,5 @@ public class ProductServiceImpl implements ProductService{
         return productRepo.search(q);
     }
 
-//    @Override
-//    public Page<Product> getProducts(int page, int size) {
-//        return productRepo.findAll(PageRequest.of(page, size));    }
+
 }
