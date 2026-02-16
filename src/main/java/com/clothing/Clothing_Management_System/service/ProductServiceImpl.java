@@ -42,9 +42,17 @@ public class ProductServiceImpl implements ProductService{
         Product product = productRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
 
-        product.setQuantity(request.getQuantity());
-        product.setCostPrice(request.getCostPrice());
-        product.setSellingPrice(request.getSellingPrice());
+        if (request.getQuantity() != null) {
+            product.setQuantity(request.getQuantity());
+        }
+
+        if (request.getCostPrice() != null) {
+            product.setCostPrice(request.getCostPrice());
+        }
+
+        if (request.getSellingPrice() != null) {
+            product.setSellingPrice(request.getSellingPrice());
+        }
 
         product.setAddedDate(LocalDate.now());
 
