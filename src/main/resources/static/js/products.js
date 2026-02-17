@@ -38,7 +38,20 @@ document.addEventListener("DOMContentLoaded", function() {
             return;
         }
 
-        products.forEach((product) => {
+
+        const activeProducts = products.filter(product => product.quantity > 0);
+
+        if (!activeProducts.length) {
+            tbody.innerHTML = `
+                <tr>
+                  <td colspan="9" class="text-center text-muted py-4">
+                    no matching products found
+                  </td>
+                </tr>
+            `;
+            return;
+        }
+        activeProducts.forEach((product) => {
             tbody.innerHTML += `
         <tr>
           <td>${product.id}</td>
@@ -54,7 +67,7 @@ document.addEventListener("DOMContentLoaded", function() {
               class="btn btn-sm btn-outline-primary edit-btn"
               data-id="${product.id}"
               data-price="${product.sellingPrice}"
-              data-quantity="${product.quantity}">
+              data-stock="${product.quantity}">
               Edit
             </button>
           </td>
@@ -117,7 +130,6 @@ document.addEventListener("DOMContentLoaded", function() {
     const modalInstance = bootstrap.Modal.getInstance(modalElement);
     modalInstance.hide();
 
-    await fetchProducts("/api/products");
     await fetchProducts("/api/products/getAll")
     });
 

@@ -39,7 +39,8 @@ document.addEventListener("DOMContentLoaded", function() {
             return;
         }
 
-        products.forEach((product) => {
+        const activeproducts=products.filter(product=>product.quantity>0)
+        activeproducts.forEach((product) => {
             billingTBody.innerHTML += `
         <tr>
           <td>${product.id}</td>
@@ -52,7 +53,8 @@ document.addEventListener("DOMContentLoaded", function() {
                       class="btn btn-sm btn-success add-btn"
                       data-id="${product.id}"
                       data-name="${product.name}"
-                      data-price="${product.sellingPrice}">
+                      data-price="${product.sellingPrice}"
+                      data-stock="${product.quantity}">
                       Add
                   </button>
           </td>
@@ -89,10 +91,11 @@ document.addEventListener("DOMContentLoaded", function() {
             const id = e.target.dataset.id;
             const name = e.target.dataset.name;
             const price = e.target.dataset.price;
-
+            const stock=e.target.dataset.stock;
             console.log("Adding:", id, name, price);
+            console.log("raw data - ",id,name,price,stock);
 
-            addProductToCart({ id, name, price });
+            addProductToCart({ id, name, price, stock });
         }
     });
 
@@ -101,12 +104,15 @@ document.addEventListener("DOMContentLoaded", function() {
         const id = product.id;
 
         if (cart[id]) {
-            cart[id].qty += 1;
+            if (cart[id].qty < cart[id].stock) {
+                  cart[id].qty += 1;
+            }
         } else {
             cart[id] = {
                 id: product.id,
                 name: product.name,
                 price: parseFloat(product.price),
+                stock: parseInt(product.stock),
                 qty: 1
             };
         }
@@ -125,9 +131,11 @@ document.addEventListener("DOMContentLoaded", function() {
             <tr data-id="${item.id}">
                 <td>${item.name}</td>
                 <td>
-                    <button class="btn btn-sm btn-danger fw-bold px-2 qty-minus">-</button>
+                    <button class="btn btn-sm btn-danger fw-bold px-2 qty-minus"
+                    ${item.qty <= 1 ? "disabled" : ""}>-</button>
                     <span class="mx-2">${item.qty}</span>
-                    <button class="btn btn-sm btn-success fw-bold px-2 qty-plus">+</button>
+                    <button class="btn btn-sm btn-success fw-bold px-2 qty-plus"
+                    ${item.qty >= item.stock ? "disabled" : ""}>+</button>
                 </td>
                 <td>₹${item.price * item.qty}</td>
                 <td>
@@ -138,6 +146,8 @@ document.addEventListener("DOMContentLoaded", function() {
             </tr>
         `;
         });
+
+        generateBillbtn.disabled = Object.keys(cart).length === 0;
     }
 
 
@@ -154,8 +164,10 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
         if (e.target.classList.contains("qty-plus")) {
-            cart[id].qty += 1;
-            renderCart();
+            if (cart[id].qty < cart[id].stock) {
+                    cart[id].qty += 1;
+                    renderCart();
+            }
         }
 
         if (e.target.classList.contains("qty-minus")) {
