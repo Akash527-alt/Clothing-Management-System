@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const searchBtn = document.getElementById("search_button");
     const clearBtn = document.getElementById("clearButton");
     const generateBillbtn=document.getElementById("generateBillbtn")
+    generateBillbtn.disabled=true;
 
     console.log("js loaded");
 
@@ -147,7 +148,7 @@ document.addEventListener("DOMContentLoaded", function() {
         `;
         });
 
-        generateBillbtn.disabled = Object.keys(cart).length === 0;
+            updateGenerateButtonState();
     }
 
 
@@ -157,28 +158,35 @@ document.addEventListener("DOMContentLoaded", function() {
         if (!row) return;
 
         const id = row.dataset.id;
+        if (!cart[id]) return;
 
+        // REMOVE
         if (e.target.classList.contains("remove-btn")) {
             delete cart[id];
             renderCart();
+            return;
         }
 
+        // INCREMENT
         if (e.target.classList.contains("qty-plus")) {
             if (cart[id].qty < cart[id].stock) {
-                    cart[id].qty += 1;
-                    renderCart();
+                cart[id].qty += 1;
+                renderCart();
             }
+            return;
         }
 
+        // DECREMENT (never auto-delete here)
         if (e.target.classList.contains("qty-minus")) {
             if (cart[id].qty > 1) {
                 cart[id].qty -= 1;
-            } else {
-                delete cart[id];
+                renderCart();
             }
-            renderCart();
+            return;
         }
+
     });
+
 
 
     generateBillbtn.addEventListener("click", async function(){
@@ -211,7 +219,18 @@ document.addEventListener("DOMContentLoaded", function() {
             console.error("Error while generating bill:", err);
         }
 
+        Object.keys(cart).forEach(id => delete cart[id]);
+        renderCart();
+
+        await fetchProducts("/api/products/getAll");
+
     });
+
+
+    function updateGenerateButtonState() {
+        const isEmpty = Object.keys(cart).length === 0;
+        generateBillbtn.disabled = isEmpty;
+    }
 
     fetchProducts("/api/products/getAll");
 });
