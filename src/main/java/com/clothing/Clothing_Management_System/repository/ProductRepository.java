@@ -8,11 +8,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product,Long> {
+
     @Query("""
         SELECT p FROM Product p
         WHERE
@@ -23,6 +25,17 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
             )
         """)
     List<Product> search(@Param("q") String q);
+
+
+
+    @Query("""
+        SELECT p FROM Product p
+        WHERE p.addedDate <= :cutoffDate
+        ORDER BY p.addedDate ASC
+        """)
+    List<Product> findOldStock(@Param("cutoffDate") LocalDate cutoffDate);
+
+
 
 
 //    Page<Product> findByNameContainingIgnoreCase(String name, Pageable pageable);
