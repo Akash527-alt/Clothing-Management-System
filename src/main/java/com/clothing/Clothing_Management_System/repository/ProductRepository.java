@@ -21,6 +21,7 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
             (:q IS NULL OR :q = '' OR
              CAST(p.id AS string) LIKE CONCAT('%', :q, '%') OR
              LOWER(p.name) LIKE LOWER(CONCAT('%', :q, '%')) OR
+             LOWER(p.brand) LIKE LOWER(CONCAT('%', :q, '%')) OR
              LOWER(p.category) LIKE LOWER(CONCAT('%', :q, '%'))
             )
         """)
