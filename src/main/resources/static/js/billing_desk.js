@@ -82,7 +82,6 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     searchInput.addEventListener("keydown", (e) => {
-    console.log("haaa");
         if (e.key === "Enter") searchBtn.click();
     });
 
@@ -215,12 +214,15 @@ document.addEventListener("DOMContentLoaded", function() {
             const data = await res.json(); // remove if no response body
             console.log("Bill generated:", data);
 
+            renderBillModal(data);
+
         } catch (err) {
             console.error("Error while generating bill:", err);
         }
 
         Object.keys(cart).forEach(id => delete cart[id]);
         renderCart();
+
 
         await fetchProducts("/api/products/getAll");
 
@@ -230,6 +232,31 @@ document.addEventListener("DOMContentLoaded", function() {
     function updateGenerateButtonState() {
         const isEmpty = Object.keys(cart).length === 0;
         generateBillbtn.disabled = isEmpty;
+    }
+
+    function renderBillModal(data) {
+
+        document.getElementById("billId").innerText = "Bill ID: #" + data.id;
+        document.getElementById("billDate").innerText = "Date: " + data.saleDate;
+
+        const tbody = document.getElementById("billItemsBody");
+        tbody.innerHTML = "";
+
+        data.items.forEach(item => {
+            tbody.innerHTML += `
+            <tr>
+                <td>${item.productName}</td>
+                <td class="text-center">${item.quantity}</td>
+                <td class="text-end">₹ ${item.unitPrice}</td>
+                <td class="text-end">₹ ${item.lineTotal}</td>
+            </tr>
+        `;
+        });
+
+        document.getElementById("billTotal").innerText = "₹ " + data.totalAmount;
+
+        const modal = new bootstrap.Modal(document.getElementById("billModal"));
+        modal.show();
     }
 
     fetchProducts("/api/products/getAll");

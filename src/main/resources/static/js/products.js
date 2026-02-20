@@ -136,10 +136,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
     tbody.addEventListener("click", function (e) {
         if (e.target.classList.contains("edit-btn")) {
+            console.log("dataset:", e.target.dataset);
 
             const id = e.target.dataset.id;
             const price = e.target.dataset.price;
-            const quantity = e.target.dataset.quantity;
+            const quantity = e.target.dataset.stock;
 
             document.getElementById("editProductId").value = id;
             document.getElementById("editSellingPrice").value = price;
