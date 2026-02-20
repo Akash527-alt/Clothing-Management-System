@@ -139,10 +139,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
             const id = e.target.dataset.id;
             const price = e.target.dataset.price;
-            const quantity = e.target.dataset.quantity;
-
+            const quantity = e.target.dataset.stock;
             document.getElementById("editProductId").value = id;
             document.getElementById("editSellingPrice").value = price;
+
             document.getElementById("editStockQuantity").value = quantity;
 
             const modal = new bootstrap.Modal(document.getElementById("editStockModal"));
