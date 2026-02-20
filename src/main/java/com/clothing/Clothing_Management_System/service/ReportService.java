@@ -33,11 +33,24 @@ public class ReportService {
         return saleRepo
                 .findAllByOrderBySaleDateDesc(PageRequest.of(0, n))
                 .stream()
-                .map(s -> new SaleDto(
-                        s.getId(),
-                        s.getSaleDate(),
-                        s.getTotalAmount()
-                ))
+                .map(s -> {
+
+                    double totalProfit = s.getItems()
+                            .stream()
+                            .mapToDouble(item ->
+                                    (item.getUnitPrice()
+                                            - item.getProduct().getCostPrice())
+                                            * item.getQuantity()
+                            )
+                            .sum();
+
+                    return new SaleDto(
+                            s.getId(),
+                            s.getSaleDate(),
+                            s.getTotalAmount(),
+                            totalProfit
+                    );
+                })
                 .toList();
     }
 

@@ -5,5 +5,6 @@ import java.time.LocalDate;
 public record SaleDto(
         Long id,
         LocalDate saleDate,
-        Double totalAmount
+        Double totalAmount,
+        Double totalProfit
 ) {}
