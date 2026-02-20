@@ -2,7 +2,6 @@ package com.clothing.Clothing_Management_System.controller;
 
 import com.clothing.Clothing_Management_System.dto.SaleDto;
 import com.clothing.Clothing_Management_System.entity.Product;
-import com.clothing.Clothing_Management_System.entity.Sale;
 import com.clothing.Clothing_Management_System.projection.CategoryMonthlySummary;
 import com.clothing.Clothing_Management_System.service.ReportService;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +38,7 @@ public class ReportController {
 
     @GetMapping("/last-month-category-summary")
     public List<CategoryMonthlySummary> getLastMonthSummary() {
-        return reportService.getLastMonthCategorySummary();
+        return reportService.getLast30DaysCategorySummary();
     }
 
 }

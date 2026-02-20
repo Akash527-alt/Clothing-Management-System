@@ -1,11 +1,8 @@
 package com.clothing.Clothing_Management_System.service;
 
 
-import com.clothing.Clothing_Management_System.dto.ProductRequest;
 import com.clothing.Clothing_Management_System.dto.SaleDto;
-import com.clothing.Clothing_Management_System.dto.SaleResponse;
 import com.clothing.Clothing_Management_System.entity.Product;
-import com.clothing.Clothing_Management_System.entity.Sale;
 import com.clothing.Clothing_Management_System.projection.CategoryMonthlySummary;
 import com.clothing.Clothing_Management_System.repository.ProductRepository;
 import com.clothing.Clothing_Management_System.repository.SaleRepository;
@@ -44,12 +41,10 @@ public class ReportService {
                 .toList();
     }
 
-    public List<CategoryMonthlySummary> getLastMonthCategorySummary() {
+    public List<CategoryMonthlySummary> getLast30DaysCategorySummary() {
 
-        LocalDate now = LocalDate.now();
-
-        LocalDate startDate = now.minusMonths(1).withDayOfMonth(1);
-        LocalDate endDate = now.withDayOfMonth(1).minusDays(1);
+        LocalDate endDate = LocalDate.now();
+        LocalDate startDate = endDate.minusDays(30);
 
         return saleRepo
                 .getLastMonthCategorySummary(startDate, endDate);
