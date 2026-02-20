@@ -224,16 +224,19 @@
 
                 <div class="d-grid gap-3">
 
-                    <button class="btn btn-outline-danger btn-lg rounded-3">
+                    <button class="btn btn-outline-danger btn-lg rounded-3"
+                    onclick="window.location.href='/ClothingShop/old_stock_report'">
                         🧊 Old Stock
                     </button>
 
-                    <button class="btn btn-outline-primary btn-lg rounded-3">
+                    <button class="btn btn-outline-primary btn-lg rounded-3"
+                            onclick="window.location.href='/ClothingShop/last-n-sales'">
                         🧾 Last N Sales
                     </button>
 
-                    <button class="btn btn-outline-success btn-lg rounded-3">
-                        📅 Last Month Sales & Profit
+                    <button class="btn btn-outline-success btn-lg rounded-3"
+                    onclick="window.location.href='/ClothingShop/last-month-sales-category-wise'">
+                        📅 Last Month Sales & Profit (Category-wise)
                     </button>
 
                 </div>
@@ -266,7 +269,7 @@
 
         <!-- Search -->
         <div class="input-group w-50">
-            <input id="searchInput" type="text" class="form-control" placeholder="Search by ID, Name, Product Type...">
+            <input id="searchInput" type="text" class="form-control" placeholder="Search by ID, Name, Brand, Category...">
             <button id="searchButton" type ="button" class="btn btn-primary">Search</button>
             <button id ="clearButton" type ="button" class="btn btn-outline-secondary ms-2">clear</button>
         </div>

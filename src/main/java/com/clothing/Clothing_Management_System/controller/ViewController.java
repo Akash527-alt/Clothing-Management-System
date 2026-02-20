@@ -17,6 +17,21 @@ public class ViewController {
         return "products/billing_desk";
     }
 
+    @GetMapping("/old_stock_report")
+    public String old_stock_report(){
+        return "products/old_stock_report";
+    }
+
+    @GetMapping("/last-n-sales")
+    public String lastNSalesPage(){
+        return "products/last-n-sales";
+    }
+
+    @GetMapping("/last-month-sales-category-wise")
+    public String lastMonthSalesCategoryWise(){
+        return "products/last-month-sales-category-wise";
+    }
+
 
 }
 
