@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -36,9 +37,11 @@ public class ReportController {
     }
 
 
-    @GetMapping("/last-month-category-summary")
-    public List<CategoryMonthlySummary> getLastMonthSummary() {
-        return reportService.getLast30DaysCategorySummary();
+    @GetMapping("/category-wise-sales-summary")
+    public List<CategoryMonthlySummary> getCategorySummaryByDateRange(
+            @RequestParam LocalDate startDate,
+            @RequestParam LocalDate endDate) {
+        return reportService.getCategorySummaryByDateRange(startDate,endDate);
     }
 
 }

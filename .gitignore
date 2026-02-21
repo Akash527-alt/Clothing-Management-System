@@ -19,6 +19,7 @@ target/
 *.iml
 *.ipr
 
+/cloc-2.08.exe
 
 # application properties with secrets
 application.properties

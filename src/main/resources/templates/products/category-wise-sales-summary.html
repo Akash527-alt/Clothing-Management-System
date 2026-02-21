@@ -50,7 +50,7 @@
 
         <!-- Header + Buttons -->
         <div class="d-flex justify-content-between align-items-center mb-4 no-print">
-            <h4 class="fw-bold">📊 Last 30 Days Category Summary</h4>
+            <h4 class="fw-bold">📊 sales summary </h4>
 
             <div>
                 <button class="btn btn-secondary me-2"
@@ -65,12 +65,33 @@
             </div>
         </div>
 
+        <div class="row mb-4 no-print">
+
+            <div class="col-md-4">
+                <label class="form-label">Start Date</label>
+                <input type="date" id="startDate" class="form-control">
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">End Date</label>
+                <input type="date" id="endDate" class="form-control">
+            </div>
+
+            <div class="col-md-4 d-flex align-items-end">
+                <button class="btn btn-primary w-100"
+                        onclick="loadSummary()">
+                    🔍 Get Summary
+                </button>
+            </div>
+
+        </div>
+
         <!-- Report Section -->
         <div id="reportSection">
 
             <div class="text-center mb-4">
                 <h5 class="fw-bold">Clothing Management Shop</h5>
-                <small class="text-muted">Category Sales Summary (Last 30 Days)</small>
+                <small class="text-muted">Sales Summary </small>
                 <br>
                 <small id="reportDate"></small>
             </div>
@@ -101,24 +122,70 @@
 </div>
 
 <script>
-    document.addEventListener("DOMContentLoaded", async function() {
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const tbody = document.getElementById("categorySummaryTBody");
+        const overallRevenueEl = document.getElementById("overallRevenue");
+        const reportDateEl = document.getElementById("reportDate");
+
+        // Show generated date
+        reportDateEl.innerText =
+            "Generated on: " + new Date().toLocaleDateString();
+
+        // Set default last 30 days
+        const today = new Date();
+        const prior = new Date();
+        prior.setDate(today.getDate() - 30);
+
+        document.getElementById("startDate").value =
+            prior.toISOString().split('T')[0];
+
+        document.getElementById("endDate").value =
+            today.toISOString().split('T')[0];
+
+        loadSummary()
+
+    });
+
+
+    async function loadSummary() {
+
+        const startDate = document.getElementById("startDate").value;
+        const endDate = document.getElementById("endDate").value;
 
         const tbody = document.getElementById("categorySummaryTBody");
         const overallRevenueEl = document.getElementById("overallRevenue");
 
-        document.getElementById("reportDate").innerText =
-            "Generated on: " + new Date().toLocaleDateString();
+        if (!startDate || !endDate) {
+            alert("Please select both start and end dates");
+            return;
+        }
+
+        if (startDate > endDate) {
+            alert("Start date cannot be after End date");
+            return;
+        }
 
         try {
 
-            const res = await fetch("/api/reports/last-month-category-summary", {
-                method: "GET",
-                cache: "no-store"
-            });
+            tbody.innerHTML = `
+            <tr>
+                <td colspan="4" class="text-center text-muted">
+                    Loading...
+                </td>
+            </tr>
+        `;
+
+            const res = await fetch(
+                `/api/reports/category-wise-sales-summary?startDate=${startDate}&endDate=${endDate}`,
+                {
+                    method: "GET",
+                    cache: "no-store"
+                }
+            );
 
             if (!res.ok) {
-                console.error("Failed to fetch category summary:", res.status);
-                return;
+                throw new Error("Failed to fetch report");
             }
 
             const data = await res.json();
@@ -127,39 +194,54 @@
             let overallRevenue = 0;
 
             if (!data || data.length === 0) {
+
                 tbody.innerHTML = `
                 <tr>
-                    <td colspan="2" class="text-center text-muted">
-                        No sales data found for last 30 days
+                    <td colspan="4" class="text-center text-muted">
+                        No sales data found for selected dates
                     </td>
                 </tr>
             `;
+
                 overallRevenueEl.innerText = "0";
                 return;
             }
 
             data.forEach(summary => {
 
-                const amount = summary.totalProfit ?? 0;
-                overallRevenue += amount;
+                const quantity = summary.totalQuantity ?? 0;
+                const sales = summary.totalSales ?? 0;
+                const profit = summary.totalProfit ?? 0;
+
+                overallRevenue += profit;
 
                 tbody.innerHTML += `
                 <tr>
                     <td>${summary.category ?? "-"}</td>
-                    <td>${summary.totalQuantity ?? 0}</td>
-                    <td>₹ ${summary.totalSales ?? 0}</td>
-                    <td>₹ ${summary.totalProfit ?? 0}</td>
+                    <td>${quantity}</td>
+                    <td>₹ ${sales.toFixed(2)}</td>
+                    <td>₹ ${profit.toFixed(2)}</td>
                 </tr>
             `;
             });
 
-            overallRevenueEl.innerText = overallRevenue;
+            overallRevenueEl.innerText = overallRevenue.toFixed(2);
 
-        } catch (err) {
-            console.error("Error loading category summary:", err);
+        } catch (error) {
+
+            console.error("Error loading summary:", error);
+
+            tbody.innerHTML = `
+            <tr>
+                <td colspan="4" class="text-center text-danger">
+                    Error loading report
+                </td>
+            </tr>
+        `;
+
+            overallRevenueEl.innerText = "0";
         }
-
-    });
+    }
 </script>
 
 </body>

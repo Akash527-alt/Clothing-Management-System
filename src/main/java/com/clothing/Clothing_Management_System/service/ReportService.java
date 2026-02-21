@@ -54,13 +54,15 @@ public class ReportService {
                 .toList();
     }
 
-    public List<CategoryMonthlySummary> getLast30DaysCategorySummary() {
+    public List<CategoryMonthlySummary> getCategorySummaryByDateRange(
+            LocalDate startDate,
+            LocalDate endDate) {
 
-        LocalDate endDate = LocalDate.now();
-        LocalDate startDate = endDate.minusDays(30);
+        if (startDate.isAfter(endDate)) {
+            throw new IllegalArgumentException("Start date cannot be after end date");
+        }
 
-        return saleRepo
-                .getLastMonthCategorySummary(startDate, endDate);
+        return saleRepo.getCategorySummaryByDateRange(startDate, endDate);
     }
 
 }

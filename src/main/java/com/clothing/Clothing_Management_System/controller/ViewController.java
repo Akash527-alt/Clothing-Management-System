@@ -27,9 +27,9 @@ public class ViewController {
         return "products/last-n-sales";
     }
 
-    @GetMapping("/last-month-sales-category-wise")
+    @GetMapping("/category-wise-sales-summary")
     public String lastMonthSalesCategoryWise(){
-        return "products/last-month-sales-category-wise";
+        return "products/category-wise-sales-summary";
     }
 
 

@@ -17,19 +17,19 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
 
 
     @Query("""
-            SELECT 
-                p.category AS category,
-                SUM(si.quantity) AS totalQuantity,
-                SUM(si.lineTotal) AS totalSales,
-                SUM((si.unitPrice - p.costPrice) * si.quantity) AS totalProfit
-            FROM SaleItem si
-            JOIN si.product p
-            JOIN si.sale s
-            WHERE s.saleDate BETWEEN :startDate AND :endDate
-            GROUP BY p.category
-            ORDER BY SUM(si.lineTotal) DESC
+        SELECT 
+            p.category AS category,
+            SUM(si.quantity) AS totalQuantity,
+            SUM(si.lineTotal) AS totalSales,
+            SUM((si.unitPrice - p.costPrice) * si.quantity) AS totalProfit
+        FROM SaleItem si
+        JOIN si.product p
+        JOIN si.sale s
+        WHERE s.saleDate BETWEEN :startDate AND :endDate
+        GROUP BY p.category
+        ORDER BY SUM(si.lineTotal) DESC
 """)
-    List<CategoryMonthlySummary> getLastMonthCategorySummary(
+    List<CategoryMonthlySummary> getCategorySummaryByDateRange(
             @Param("startDate") LocalDate startDate,
             @Param("endDate") LocalDate endDate
     );
