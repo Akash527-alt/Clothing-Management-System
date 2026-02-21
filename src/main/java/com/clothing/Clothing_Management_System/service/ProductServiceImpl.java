@@ -16,6 +16,8 @@ import java.util.List;
 @Service
 public class ProductServiceImpl implements ProductService{
 
+
+
     @Autowired
     ProductRepository productRepo;
 
@@ -83,5 +85,14 @@ public class ProductServiceImpl implements ProductService{
         return productRepo.search(q);
     }
 
+    @Override
+    public void deleteProduct(Long id) {
+
+        if (!productRepo.existsById(id)) {
+            throw new RuntimeException("Product not found with id: " + id);
+        }
+
+        productRepo.deleteById(id);
+    }
 
 }

@@ -51,29 +51,34 @@ document.addEventListener("DOMContentLoaded", function() {
             `;
             return;
         }
-        activeProducts.forEach((product) => {
-            tbody.innerHTML += `
-        <tr>
-          <td>${product.id}</td>
-          <td>${product.name ?? "-"}</td>
-          <td>${product.brand ?? "-"}</td>
-          <td>${product.category ?? "-"}</td>
-          <td>${product.gender ?? "-"}</td>
-          <td>${product.sellingPrice ?? 0}</td>
-          <td>${product.quantity?? "--/--/----" }</td>
-          <td>${product.addedDate ?? 0}</td>
-          <td>
-            <button
-              class="btn btn-sm btn-outline-primary edit-btn"
-              data-id="${product.id}"
-              data-price="${product.sellingPrice}"
-              data-stock="${product.quantity}">
-              Edit
-            </button>
-          </td>
-        </tr>
-      `;
-        });
+        products.forEach((product) => {
+
+                const stockDisplay = product.quantity === 0
+                    ? `<span class="text-danger fw-semibold">Out of Stock</span>`
+                    : product.quantity;
+
+                tbody.innerHTML += `
+                <tr>
+                  <td>${product.id}</td>
+                  <td>${product.name ?? "-"}</td>
+                  <td>${product.brand ?? "-"}</td>
+                  <td>${product.category ?? "-"}</td>
+                  <td>${product.gender ?? "-"}</td>
+                  <td>${product.sellingPrice ?? 0}</td>
+                  <td>${stockDisplay}</td>
+                  <td>${product.addedDate ?? "-"}</td>
+                  <td>
+                    <button
+                      class="btn btn-sm btn-outline-primary edit-btn"
+                      data-id="${product.id}"
+                      data-price="${product.sellingPrice}"
+                      data-stock="${product.quantity}">
+                      Edit
+                    </button>
+                  </td>
+                </tr>
+              `;
+            });
     }
 
     searchBtn.addEventListener("click", () => {

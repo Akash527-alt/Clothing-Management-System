@@ -13,6 +13,6 @@ public interface ProductService {
     Product getById(Long id);
     List<Product> search(String q);
     public Product updateProduct(Long id, UpdateProductRequest request);
-
+    public void deleteProduct(Long id);
 
 }
