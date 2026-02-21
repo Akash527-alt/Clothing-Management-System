@@ -55,22 +55,21 @@
             <div class="d-flex align-items-center gap-3">
 
                 <div class="d-flex align-items-center">
-                    <label class="me-2 fw-semibold">Last</label>
 
-                    <select id="salesCountSelector"
-                            class="form-select form-select-sm"
-                            style="width: 100px;">
-                        <!-- Options 1–50 -->
-                        <script>
-                            for (let i = 1; i <= 50; i++) {
-                                document.write(
-                                    `<option value="${i}" ${i === 10 ? "selected" : ""}>${i}</option>`
-                                );
-                            }
-                        </script>
-                    </select>
+                    <div class="d-flex align-items-center">
+                        <label class="me-2 fw-semibold">Last</label>
 
-                    <span class="ms-2 fw-semibold">sales</span>
+                        <input type="number"
+                               id="salesCountSelector"
+                               class="form-control form-control-sm"
+                               style="width: 90px;"
+                               min="1"
+                               max="50"
+                               value="5">
+
+                        <span class="ms-2 fw-semibold">sales</span>
+                    </div>
+
                 </div>
 
                 <button class="btn btn-secondary"
@@ -133,42 +132,47 @@
 
         async function loadReport(n) {
 
-            try {
+    n = parseInt(n);
 
-                console.log("Fetching last N sales:", n);
+    // Validation layer
+    if (isNaN(n) || n < 1) n = 1;
+    if (n > 50) n = 50;
 
-                const res = await fetch(`/api/reports/last-n-sales?n=${parseInt(n)}`, {
-                    method: "GET",
-                    cache: "no-store"
-                });
+    selector.value = n;
 
-                if (!res.ok) {
-                    console.error("Failed to fetch last N sales:", res.status);
-                    return;
-                }
+    try {
 
-                const data = await res.json();
+        const res = await fetch(`/api/reports/last-n-sales?n=${n}`, {
+            method: "GET",
+            cache: "no-store"
+        });
 
-                tbody.innerHTML = "";
-                let grandTotal = 0;
+        if (!res.ok) {
+            console.error("Failed to fetch last N sales:", res.status);
+            return;
+        }
 
-                if (!data || data.length === 0) {
-                    tbody.innerHTML = `
+        const data = await res.json();
+
+        tbody.innerHTML = "";
+            let grandTotal = 0;
+
+            if (!data || data.length === 0) {
+                tbody.innerHTML = `
                     <tr>
-                        <td colspan="3" class="text-center text-muted">
+                        <td colspan="4" class="text-center text-muted">
                             No sales found
                         </td>
                     </tr>
                 `;
-                    grandTotalEl.innerText = "0";
-                    return;
-                }
+                grandTotalEl.innerText = "0";
+                return;
+            }
 
-                data.forEach(sale => {
+            data.forEach(sale => {
+                grandTotal += sale.totalAmount ?? 0;
 
-                    grandTotal += sale.totalAmount ?? 0;
-
-                    tbody.innerHTML += `
+                tbody.innerHTML += `
                     <tr>
                         <td>${sale.id}</td>
                         <td>${sale.saleDate ?? "-"}</td>
@@ -176,21 +180,24 @@
                         <td>₹ ${sale.totalProfit ?? 0}</td>
                     </tr>
                 `;
-                });
+            });
 
-                grandTotalEl.innerText = grandTotal;
+            grandTotalEl.innerText = grandTotal;
 
-            } catch (err) {
-                console.error("Error loading report:", err);
+    } catch (err) {
+        console.error("Error loading report:", err);
+    }
+    }
+
+
+
+        selector.addEventListener("keydown", function (e) {
+            if (e.key === "Enter") {
+                loadReport(this.value);
             }
-        }
-
-
-        selector.addEventListener("change", function () {
-            loadReport(this.value);
         });
 
-        await loadReport(10);
+        await loadReport(selector.value);
     });
 </script>
 
