@@ -31,7 +31,7 @@ public class ReportService {
     public List<SaleDto> getLastNSales(int n) {
 
         return saleRepo
-                .findAllByOrderBySaleDateDesc(PageRequest.of(0, n))
+                .findAllByOrderByIdDesc(PageRequest.of(0, n))
                 .stream()
                 .map(s -> {
 
