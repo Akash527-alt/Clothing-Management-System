@@ -51,3 +51,6 @@ build/
 ### VS Code ###
 .vscode/
 
+### cloc ###
+cloc.exe
+
