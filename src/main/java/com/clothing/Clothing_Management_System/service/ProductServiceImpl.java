@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -63,7 +64,15 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public List<Product> getAll() {
-        return productRepo.findAll();
+        List<Product> products = productRepo.findAll();
+
+        products.sort(
+                Comparator
+                        .comparing((Product p) -> p.getQuantity() == 0)
+                        .thenComparing(Product::getQuantity)
+        );
+
+        return products;
     }
 
     @Override

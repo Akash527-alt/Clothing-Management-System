@@ -1,406 +1,196 @@
-Love the energy. If we’re doing a README, we’re not doing a “college submission README.” We’re doing a production-grade, recruiter-impressing, clone-and-run-with-zero-confusion README.
+# 🧥 Clothing Shop Management System
 
-Below is a complete, long-form `README.md` in Markdown. You can copy this directly into your project root.
+A Full-Stack Clothing Shop Management System built using **Java 21** and **Spring Boot 4.0.1** to manage products, sales, inventory, and generate analytical reports with optimized database queries.
 
----
-
-# 🧥 Clothing Management & Billing System
-
-A full-stack transactional inventory and billing application built using **Spring Boot (Java, JPA, MySQL)** with a **vanilla HTML + Bootstrap + JavaScript frontend**.
-
-This project simulates a real-world retail inventory and point-of-sale (POS) system, implementing stock control, billing, and reporting with strict relational integrity and transactional guarantees.
+This project follows a clean layered architecture and focuses on performance-aware backend development.
 
 ---
 
-## 📌 Overview
+## 🚀 Features
 
-The Clothing Management System is designed to manage:
+### 🛍 Product Management
+- Add / Update / Delete Products
+- Manage Categories
+- Track Purchase Price & Selling Price
+- Stock Quantity Management
 
-* Product inventory
-* Real-time stock updates
-* Billing operations
-* Transaction history
-* Time-based reporting
-* Category-wise revenue analytics
+### 💰 Sales Management
+- Create Sales Records
+- Automatic Total Amount Calculation
+- Automatic Profit Calculation
+- Track Sales Date-wise
 
-The system follows a clean layered architecture:
+### 📊 Reports & Analytics
+- Last N Sales (Optimized Fetching)
+- Category-wise Sales Summary
+- Category-wise Profit Summary
+- Quantity Sold per Category
+- Old Stock Detection (Based on months)
+- Monthly & Last 30 Days Reporting Logic
 
-```
-Controller → Service → Repository → Database
-```
-
-And uses AJAX (fetch API) for dynamic frontend updates without full-page reloads.
-
----
-
-# 🚀 Tech Stack
-
-## Backend
-
-* **Java 17**
-* **Spring Boot 3.x**
-* **Spring Web**
-* **Spring Data JPA (Hibernate 7.x)**
-* **MySQL 8.x**
-* **HikariCP (Connection Pooling)**
-* **Maven**
-* **Jakarta Servlet API**
-* **Hibernate ORM**
-* **Lombok (if used in your project)**
-
-## Frontend
-
-* HTML5
-* CSS3
-* Bootstrap 5.3
-* Vanilla JavaScript
-* Fetch API (AJAX)
-* Bootstrap Modals
-* DOM Manipulation
-* CSS `@media print` for report printing
-
-## Database
-
-* MySQL 8.0+
-* InnoDB Engine
-* Foreign key constraints enabled
-* Transactional consistency enforced
+### ⚡ Performance Optimizations
+- Limited record fetching (avoid large payloads)
+- JPQL custom queries
+- DTO-based projections
+- Avoided unnecessary entity loading
+- Stream API usage for data transformation
+- Considered pagination for large datasets
 
 ---
 
-# 📦 Features
+## 🛠 Tech Stack
 
-## 🛍 Product Management
+### 🔹 Backend
+- Java 21
+- Spring Boot 4.0.1
+- Spring Data JPA
+- Hibernate
+- Lombok
+- MySQL
 
-* Add new product
-* Edit selling price
-* Edit stock quantity
-* Automatic “Out of Stock” detection
-* Dynamic stock rendering in UI
+### 🔹 Frontend
+- Thymeleaf
+- HTML5
+- CSS3
+- Bootstrap
+- JavaScript
 
----
-
-## 💳 Billing System
-
-* Add products to cart
-* Client-side cart state management
-* Server-authoritative sale processing
-* Transactional stock deduction
-* Automatic sale ID generation
-* Bill receipt modal
-* Print-friendly bill layout
-
-All stock updates happen inside a `@Transactional` service method to prevent inconsistent state.
+### 🔹 Version Control
+- Git
+- GitHub
 
 ---
 
-# 🧠 Architecture Overview
+## 🏗 Project Architecture
 
-## Backend Layering
+This project follows a clean layered architecture:
 
-### Controller Layer
+Controller Layer  
+→ Handles HTTP requests and API endpoints
 
-Handles HTTP requests and returns JSON responses.
+Service Layer  
+→ Contains business logic and calculations
 
-### Service Layer
+Repository Layer  
+→ Database interaction using Spring Data JPA
 
-Contains business logic:
+Entity Layer  
+→ Represents database tables
 
-* Stock deduction
-* Delete validation
-* Reporting filters
-* Integrity checks
-
-### Repository Layer
-
-Extends `JpaRepository` to interact with MySQL.
-
-### Entity Layer
-
-Defines relational models:
-
-* Product
-* Sale
-* SaleItem
-
-Relational integrity is enforced using foreign keys:
-
-```
-Product → SaleItem → Sale
-```
+DTO Layer  
+→ Used for optimized data transfer and custom projections
 
 ---
 
-## 📊 Reports Module
+## 📂 Folder Structure
+    src/main/java
+    ├── controller
+    ├── service
+    ├── repository
+    ├── entity
+    ├── dto
 
-### 1️⃣ Old Stock Report
-
-* Time-based filtering
-* Adjustable month range
-* Printable layout
-
-### 2️⃣ Last N Sales
-
-* Dynamic selection of last N transactions
-* Aggregated grand total
-* Profit calculation
-* Printable report
-
-### 3️⃣ Last N Days Category Summary
-
-* Revenue grouped by category
-* Aggregated totals
-* Time-window filtering
-* Business analytics layer
-
----
-
-## 🛡 Data Integrity & Constraints
-
-* Foreign key enforcement between `sale_items` and `products`
-* Prevents deletion of products linked to historical sales
-* Database-level referential integrity
-* Service-layer validation before delete
-* Transaction rollback on failure
-
----
-
-# 💻 Prerequisites (Windows Environment)
-
-## 1️⃣ Java
-
-Install:
-
-* Java 17 (Recommended)
-* Verify:
-
-```
-java -version
-```
-
-Expected:
-
-```
-java version "17.x.x"
-```
-
----
-
-## 2️⃣ Maven
-
-Install Maven 3.9+
-
-Verify:
-
-```
-mvn -v
-```
-
----
-
-## 3️⃣ MySQL
-
-Install:
-
-* **MySQL Server 8.0+**
-* MySQL Workbench (optional)
-
-Ensure:
-
-* InnoDB engine enabled
-* Foreign key checks ON
-
-Check version:
-
-```
-SELECT VERSION();
-```
-
-Expected:
-
-```
-8.0.x
-```
-
----
-
-# 🗄 Database Setup
-
-## Step 1: Create Database
-
-```sql
-CREATE DATABASE clothing;
-```
-
-## Step 2: Update `application.properties`
-
-```
-spring.datasource.url=jdbc:mysql://localhost:3306/clothing
-spring.datasource.username=root
-spring.datasource.password=YOUR_PASSWORD
-spring.jpa.hibernate.ddl-auto=update
-spring.jpa.show-sql=true
-spring.jpa.properties.hibernate.format_sql=true
-```
-
----
-
-# 🛠 Build Instructions (Windows)
-
-## Step 1: Clone Repository
-
-```
-git clone https://github.com/YOUR_USERNAME/Clothing-Management-System.git
-cd Clothing-Management-System
-```
-
-## Step 2: Build Project
-
-```
-mvn clean install
-```
-
-## Step 3: Run Application
-
-```
-mvn spring-boot:run
-```
-
-Or:
-
-```
-java -jar target/Clothing-Management-System-0.0.1-SNAPSHOT.jar
-```
-
----
-
-## Application URL
-
-```
-http://localhost:8081/ClothingShop/products
-```
-
----
-
-# 📂 Project Structure
-
-```
-src/main/java/com/clothing
-│
-├── controller
-│   ├── ProductController
-│   ├── SaleController
-│   └── ReportController
-│
-├── service
-│   ├── ProductService
-│   ├── ProductServiceImpl
-│   ├── SaleService
-│   └── ReportService
-│
-├── repository
-│   ├── ProductRepository
-│   ├── SaleRepository
-│   └── SaleItemRepository
-│
-├── entity
-│   ├── Product
-│   ├── Sale
-│   └── SaleItem
-│
-resources/
-├── static/js/
-├── templates/
-└── application.properties
-```
-
+    src/main/resources
+    ├── templates (Thymeleaf UI)
+    ├── static (CSS, JS)
+    ├── application.properties
 
 
 ---
 
-# 🖨 Printing Support
+## 📊 Reporting APIs
 
-* Uses CSS `@media print`
-* Only report/bill section is visible during printing
-* All other UI elements hidden
-* Clean POS-style output
+### 1️⃣ Last N Sales
+Fetch latest N sales records ordered by date.
 
----
-
-# 🔄 AJAX Integration
-
-All dynamic updates use:
-
-```
-fetch()
-```
-
-No full-page reload required for:
-
-* Add product
-* Edit product
-* Delete product
-* Generate bill
-* Generate reports
+Example:
+GET /api/reports/last-n-sales?n=10
 
 ---
 
-# ⚙ Configuration Notes
+### 2️⃣ Category-wise Sales & Profit Summary
+Returns:
+- Category
+- Total Sales
+- Total Profit
+- Total Quantity Sold
 
-Port:
-
-```
-server.port=8081
-```
-
-To change:
-
-```
-server.port=9090
-```
+Uses optimized JPQL query for aggregation.
 
 ---
 
-# 🧪 Testing Considerations
+### 3️⃣ Old Stock Report
+Fetch products that have not been sold for X months.
 
-Current build:
-
-* Manual testing via UI
-
-Future improvements:
-
-* Integration tests for transactional services
-* Unit tests for ReportService
-* Postman API collection
+Example:
+GET /api/reports/old-stock?months=6
 
 ---
 
-# 🧩 Future Enhancements
+## 🧠 Key Concepts Implemented
 
-
-* Role-based authentication
-* Docker support
-* Pagination for large datasets
-* Sales analytics charts
-* CSV export for reports
-* JWT authentication
-
----
-
-# 📈 Engineering Highlights
-
-* Transactional integrity enforced
-* Database-level constraints respected
-* Layered architecture
-* Clean separation of concerns
-* Server-authoritative financial calculations
-* UI-state synchronization with backend
-* Referential integrity protection
-* Dynamic filtering and analytics
+- Aggregation Queries using JPQL
+- Group By operations
+- SUM() calculations for profit & quantity
+- Stream API for transformation
+- DTO projection for optimized API responses
+- Performance handling for large record sets
+- Clean Git workflow in team collaboration
 
 ---
 
+## ⚙️ How To Run
+
+### 1️⃣ Clone the Repository
+    git clone https://github.com/Akash527-alt/Clothing-Management-System.git
 
 
+### 2️⃣ Configure Database
+
+Update `application.properties`:
+
+    spring.datasource.url=jdbc:mysql://localhost:3306/your_database
+    spring.datasource.username=your_username
+    spring.datasource.password=your_password
 
 
+### 3️⃣ Run the Application
+
+Run the Spring Boot application.
+
+Application will start at:
+http://localhost:{portNumber}
+
+
+---
+
+## 📈 Future Improvements
+
+- Add Pagination to reports
+- Add Authentication & Authorization (Spring Security)
+- Add Dashboard with Charts
+- Deploy to Cloud (AWS / Render / Railway)
+- Add Swagger API Documentation
+- Add Unit & Integration Tests
+
+---
+
+## 👨‍💻 Authors
+
+Akash Prajapati
+Bachelor of Computer Science (Expected 2027)
+
+GitHub:
+https://github.com/Akash527-alt
+
+Darshan Parekh
+Bachelor of Computer Science (Expected 2027)
+
+GitHub:
+https://github.com/darshan2456
+
+---
+
+## 📄 License
+
+This project is developed for educational and learning purposes.
