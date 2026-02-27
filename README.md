@@ -1,40 +1,31 @@
 # 🧥 Clothing Shop Management System
 
-A Full-Stack Clothing Shop Management System built using **Java 21** and **Spring Boot 4.0.1** to manage products, sales, inventory, and generate analytical reports with optimized database queries.
+A Full-Stack Clothing Shop Management System built using **Java 21** and **Spring Boot 4** to manage products, inventory, sales, and generate analytical reports.
 
-This project follows a clean layered architecture and focuses on performance-aware backend development.
+This project focuses on clean architecture, optimized database queries, and backend performance handling.
 
 ---
 
-## 🚀 Features
+## 🌐 Live Demo
 
-### 🛍 Product Management
-- Add / Update / Delete Products
-- Manage Categories
-- Track Purchase Price & Selling Price
-- Stock Quantity Management
+🔗 https://clothing-management-system.onrender.com/ClothingShop/products
 
-### 💰 Sales Management
-- Create Sales Records
-- Automatic Total Amount Calculation
-- Automatic Profit Calculation
-- Track Sales Date-wise
+⚠️ Note: Since the project is hosted on Render free tier, it may take **1–2 minutes to load** on first visit due to server cold start.
 
-### 📊 Reports & Analytics
-- Last N Sales (Optimized Fetching)
-- Category-wise Sales Summary
-- Category-wise Profit Summary
-- Quantity Sold per Category
-- Old Stock Detection (Based on months)
-- Monthly & Last 30 Days Reporting Logic
+---
 
-### ⚡ Performance Optimizations
-- Limited record fetching (avoid large payloads)
-- JPQL custom queries
-- DTO-based projections
-- Avoided unnecessary entity loading
-- Stream API usage for data transformation
-- Considered pagination for large datasets
+## 🚀 Project Overview
+
+This system helps manage:
+
+- Product inventory
+- Sales records
+- Profit calculation
+- Stock tracking
+- Category-wise reporting
+- Old stock detection
+
+The main goal of this project was not just CRUD operations, but implementing optimized reporting queries and maintaining a clean backend structure.
 
 ---
 
@@ -42,31 +33,32 @@ This project follows a clean layered architecture and focuses on performance-awa
 
 ### 🔹 Backend
 - Java 21
-- Spring Boot 4.0.1
+- Spring Boot 4
 - Spring Data JPA
 - Hibernate
 - Lombok
-- MySQL
+- PostgreSQL (Neon Cloud DB)
 
 ### 🔹 Frontend
 - Thymeleaf
 - HTML5
 - CSS3
-- Bootstrap
-- JavaScript
+- Bootstrap 
+- JavaScript (Vanilla JS)
 
-### 🔹 Version Control
+### 🔹 Tools
 - Git
 - GitHub
+- Render (Deployment)
 
 ---
 
-## 🏗 Project Architecture
+## 🏗 Architecture
 
-This project follows a clean layered architecture:
+The project follows a layered architecture:
 
 Controller Layer  
-→ Handles HTTP requests and API endpoints
+→ Handles HTTP requests and REST APIs
 
 Service Layer  
 → Contains business logic and calculations
@@ -80,114 +72,146 @@ Entity Layer
 DTO Layer  
 → Used for optimized data transfer and custom projections
 
----
-
-## 📂 Folder Structure
-    src/main/java
-    ├── controller
-    ├── service
-    ├── repository
-    ├── entity
-    ├── dto
-
-    src/main/resources
-    ├── templates (Thymeleaf UI)
-    ├── static (CSS, JS)
-    ├── application.properties
-
+This structure keeps the code organized, scalable, and easy to maintain.
 
 ---
 
-## 📊 Reporting APIs
+## 🛍 Features
+
+### Product Management
+- Add / Update / Delete Products
+- Manage Categories
+- Track Purchase Price & Selling Price
+- Stock Quantity Management
+
+### Sales Management
+- Create Sales Records
+- Automatic Total Amount Calculation
+- Automatic Profit Calculation
+- Track Sales Date
+
+### Reports & Analytics
+- Last N Sales (Optimized Fetching)
+- Category-wise Sales Summary
+- Category-wise Profit Summary
+- Quantity Sold per Category
+- Old Stock Detection (Based on months)
+- Monthly & Last 30 Days Reporting Logic
+
+---
+
+## ⚡ Performance Optimizations
+
+In this project, We implemented:
+
+- Custom JPQL aggregation queries
+- GROUP BY with SUM() calculations
+- DTO-based projections instead of full entity loading
+- Limited record fetching to avoid large payloads
+- Stream API for data transformation
+- Consideration for pagination in large datasets
+
+The focus was to avoid unnecessary database load and improve response efficiency.
+
+---
+
+## 📊 Sample API Endpoints
 
 ### 1️⃣ Last N Sales
-Fetch latest N sales records ordered by date.
-
-Example:
 GET /api/reports/last-n-sales?n=10
+
+Returns latest N sales ordered by date.
 
 ---
 
-### 2️⃣ Category-wise Sales & Profit Summary
+### 2️⃣ Category-wise Summary
+
 Returns:
 - Category
 - Total Sales
 - Total Profit
 - Total Quantity Sold
 
-Uses optimized JPQL query for aggregation.
+Uses optimized JPQL aggregation query.
 
 ---
 
 ### 3️⃣ Old Stock Report
-Fetch products that have not been sold for X months.
-
-Example:
 GET /api/reports/old-stock?months=6
 
----
-
-## 🧠 Key Concepts Implemented
-
-- Aggregation Queries using JPQL
-- Group By operations
-- SUM() calculations for profit & quantity
-- Stream API for transformation
-- DTO projection for optimized API responses
-- Performance handling for large record sets
-- Clean Git workflow in team collaboration
+Fetches products that have not been sold for the given number of months.
 
 ---
 
-## ⚙️ How To Run
+## 📂 Project Structure
+    src/main/java
+    ├── controller
+    ├── service
+    ├── repository
+    ├── entity
+    ├── dto
+    
+    src/main/resources
+    ├── templates
+    ├── static
+    ├── application-example.properties
+    ├── application-prod.properties
+    
 
-### 1️⃣ Clone the Repository
-    git clone https://github.com/Akash527-alt/Clothing-Management-System.git
+---
+
+## ⚙️ How To Run Locally
+
+### 1️⃣ Clone Repository
+git clone https://github.com/Akash527-alt/Clothing-Management-System.git
 
 
 ### 2️⃣ Configure Database
 
-Update `application.properties`:
+Copy `application-example.properties`
+and rename it to `application.properties`, then update with your credentials.
 
-    spring.datasource.url=jdbc:mysql://localhost:3306/your_database
-    spring.datasource.username=your_username
-    spring.datasource.password=your_password
+spring.datasource.url=jdbc:postgresql://localhost:5432/your_database  
+spring.datasource.username=your_username    
+spring.datasource.password=your_password
 
 
-### 3️⃣ Run the Application
+server.port=${PORT:8080}
 
-Run the Spring Boot application.
+
+
+### 3️⃣ Run Application
+mvn spring-boot:run
+
 
 Application will start at:
-http://localhost:{portNumber}
+
+
+http://localhost:8080
 
 
 ---
 
-## 📈 Future Improvements
+## 🔮 Future Improvements
 
-- Add Pagination to reports
-- Add Authentication & Authorization (Spring Security)
+- Add Role-Based Authentication (Spring Security)
+- Add Pagination & Sorting
 - Add Dashboard with Charts
-- Deploy to Cloud (AWS / Render / Railway)
-- Add Swagger API Documentation
-- Add Unit & Integration Tests
+- Add Swagger Documentation
+- Add Unit & Integration Testing
+- Improve UI design
 
 ---
 
 ## 👨‍💻 Authors
 
-Akash Prajapati
-Bachelor of Computer Science (Expected 2027)
+**Akash Prajapati**  
+Bachelor of Computer Science (Expected 2027)  
+GitHub: https://github.com/Akash527-alt
 
-GitHub:
-https://github.com/Akash527-alt
-
-Darshan Parekh
-Bachelor of Computer Science (Expected 2027)
-
-GitHub:
-https://github.com/darshan2456
+**Darshan Parekh**  
+Bachelor of Computer Science (Expected 2027)  
+GitHub: https://github.com/darshan2456
 
 ---
 
